@@ -1,0 +1,29 @@
+{
+  "name": "crowdsource",
+  "version": "1.0.0",
+  "description": "Real time voting app",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PenneyGadget/crowdsource.git"
+  },
+  "author": "Penney Garrett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PenneyGadget/crowdsource/issues"
+  },
+  "homepage": "https://github.com/PenneyGadget/crowdsource#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0"
+  }
+}
