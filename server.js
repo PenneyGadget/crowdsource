@@ -1,11 +1,30 @@
 const http = require('http');
 const express = require('express');
 const app = express();
+const path = require('path');
+const bodyParser = require('body-parser');
+const generateId = require('./lib/generate-id');
+
+app.locals.title = 'Crowdsource';
+app.locals.votes = {};
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', function(req, res)  {
+// Routes
+
+app.get('/', function(req, res) {
   res.sendFile(__dirname + '/public/index.html');
+});
+
+app.post('/poll', function(req, res) {
+  var id = generateId();
+  var title = req.body.name;
+
+  console.log(title + " poll received");
+  app.locals.votes[id] = req.body;
+
+  res.sendStatus(201);
 });
 
 const port = process.env.PORT || 3000;
@@ -19,8 +38,6 @@ module.exports = server;
 
 // Websocket Magic:
 
-var votes = {};
-
 const socketIo = require('socket.io');
 const io = socketIo(server);
 
@@ -33,11 +50,16 @@ io.on('connection', function(socket) {
 
   socket.on('message', function(channel, message) {
     if(channel === 'voteCast') {
-      votes[socket.id] = message;
+      var votes = app.locals.votes[message.id];
       var time = new Date();
-      socket.emit('myVote', {vote: message, time: time.toLocaleString() });
       socket.emit('voteTally', countVotes(votes));
+      socket.emit('myVote', {vote: message, time: time.toLocaleString() });
     }
+    // } else if(channel === 'closePoll') {
+    //   var votes = app.locals.votes[message.id];
+    //   poll.closed = true;
+    //   socket.emil('disablePoll');
+    // }
   });
 
   socket.on('disconnect', function() {

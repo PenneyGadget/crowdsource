@@ -3,16 +3,47 @@
   <head>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
     <link href="/css/application.css" rel="stylesheet" type="text/css">
-
     <title>Crowdsource</title>
   </head>
-  <body>
-    <h1>Voting is so cool!</h1>
-    <div id="status-message"></div><br>
-    <div id="connection-count"></div><br>
 
-    <h3>Vote!</h3>
-    <div id="choices">
+  <body>
+    <h1 class="text-center">Crowdsource</h1>
+
+    <div class="container text-center">
+
+    <!-- <div id="status-message"></div><br>
+    <div id="connection-count"></div><br> -->
+
+    <h3>Create a New Poll!</h3><br><br>
+    <section class="poll-form">
+      <form class="poll-setup" action="/poll" method="post">
+        <label for="poll-name">Poll Name:</label>
+        <input type="text" class="form-control" name="name" id="poll-name">
+
+        <h3>Add at least 2 and up to 6 voting choices:</h3>
+
+        <label for="opt-one">Option 1:</label>
+        <input type="text" id="opt-one"><br>
+
+        <label for="opt-two">Option 2:</label>
+        <input type="text" id="opt-two"><br>
+
+        <label for="opt-three">Option 3:</label>
+        <input type="text" id="opt-three"><br>
+
+        <label for="opt-four">Option 4:</label>
+        <input type="text" id="opt-four"><br>
+
+        <label for="opt-five">Option 5:</label>
+        <input type="text" id="opt-five"><br>
+
+        <label for="opt-six">Option 6:</label>
+        <input type="text" id="opt-six"><br><br>
+
+        <input type="submit" class="btn btn-info" value="Create Poll">
+      </form>
+    </section>
+    <!-- <div id="choices">
       <button>A</button>
       <button>B</button>
       <button>C</button>
@@ -21,8 +52,9 @@
     <div id="my-vote"></div>
 
     <h3>Current Votes:</h3>
-    <ul id="vote-tally"></ul>
+    <ul id="vote-tally"></ul> -->
 
+  </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
   </body>
