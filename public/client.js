@@ -1,7 +1,6 @@
 const socket = io();
 
 var connectionCount = document.getElementById('connection-count');
-var statusMessage = document.getElementById('status-message');
 var voteTally = document.getElementById('vote-tally');
 var myVote = document.getElementById('my-vote');
 var buttons = document.querySelectorAll('#choices button');
@@ -14,10 +13,6 @@ for(var i=0; i < buttons.length; i++) {
 
 socket.on('usersConnected', function(count) {
   connectionCount.innerText = 'Connected Users: ' + count;
-});
-
-socket.on('statusMessage', function (message) {
-  statusMessage.innerText = message;
 });
 
 socket.on('voteTally', function(votes) {

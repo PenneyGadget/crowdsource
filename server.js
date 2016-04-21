@@ -1,38 +1,37 @@
 const http = require('http');
 const express = require('express');
 const app = express();
-const path = require('path');
 const bodyParser = require('body-parser');
 const generateId = require('./lib/generate-id');
-
-app.locals.title = 'Crowdsource';
-app.locals.votes = {};
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'jade');
 
+app.locals.title = 'Crowdsource';
+app.locals.polls = {};
+
 // Routes
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('poll/:id', (req, res) => {
-  var poll = app.locals.votes[req.params.id];
-
-  res.render('poll', { vote: vote });
+app.post('/polls', (req, res) => {
+  if (!req.body.poll) { return res.sendStatus(400); }
+  var id = generateId();
+  var admin = generateId();
+  app.locals.polls[id] = {};
+  app.locals.polls[id].name = req.body.poll.name;
+  app.locals.polls[id].options = req.body.poll.options;
+  app.locals.polls[id].adminID = admin;
+  console.log(app.locals.polls[id]);
+  res.redirect('/polls/' + id + '/admin/' + admin );
 });
 
-app.post('/poll', function(req, res) {
-  var id = generateId();
-  var title = req.body.name;
-
-  console.log(title + " poll received");
-  app.locals.votes[id] = req.body;
-
-  res.sendStatus(201);
+app.get('polls/:pollID/admin/:adminID', (req, res) => {
+  res.render('admin-poll', { pollID: req.params.pollID });
 });
 
 const port = process.env.PORT || 3000;
@@ -52,8 +51,6 @@ const io = socketIo(server);
 io.on('connection', function(socket) {
   console.log('A user has connected.', io.engine.clientsCount);
 
-  socket.emit('statusMessage', 'You are connected.');
-
   io.sockets.emit('usersConnected', io.engine.clientsCount);
 
   socket.on('message', function(channel, message) {
@@ -71,7 +68,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('disconnect', function() {
-    // console.log('A user has disconnected.', io.engine.clientsCount);
+    console.log('A user has disconnected.', io.engine.clientsCount);
     // delete app.locals.votes[socket.id];
     // socket.emit('voteTally', countVotes(votes));
     io.sockets.emit('usersConnected', io.engine.clientsCount);
