@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+    <link href="/css/application.css" rel="stylesheet" type="text/css">
+
+    <title>Crowdsource</title>
+  </head>
+  <body>
+    <h1>Voting is so cool!</h1>
+    <div id="status-message"></div><br>
+    <div id="connection-count"></div><br>
+
+    <h3>Vote!</h3>
+    <div id="choices">
+      <button>A</button>
+      <button>B</button>
+      <button>C</button>
+      <button>D</button>
+    </div><br>
+    <div id="my-vote"></div>
+
+    <h3>Current Votes:</h3>
+    <ul id="vote-tally"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+  </body>
+</html>
