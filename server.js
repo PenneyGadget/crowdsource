@@ -11,10 +11,18 @@ app.locals.votes = {};
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.set('view engine', 'jade');
+
 // Routes
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(__dirname + '/views/index.html');
+});
+
+app.get('poll/:id', (req, res) => {
+  var poll = app.locals.votes[req.params.id];
+
+  res.render('poll', { vote: vote });
 });
 
 app.post('/poll', function(req, res) {
@@ -63,9 +71,9 @@ io.on('connection', function(socket) {
   });
 
   socket.on('disconnect', function() {
-    console.log('A user has disconnected.', io.engine.clientsCount);
-    delete votes[socket.id];
-    socket.emit('voteTally', countVotes(votes));
+    // console.log('A user has disconnected.', io.engine.clientsCount);
+    // delete app.locals.votes[socket.id];
+    // socket.emit('voteTally', countVotes(votes));
     io.sockets.emit('usersConnected', io.engine.clientsCount);
   });
 });
