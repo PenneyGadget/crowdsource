@@ -54,7 +54,7 @@ io.on('connection', function(socket) {
 
   socket.on('message', function(channel, message) {
     if(channel === 'voteCast') {
-      var votes = app.locals.votes[message.id];
+      var votes = app.locals.polls[message.id];
       var time = new Date();
       socket.emit('voteTally', countVotes(votes));
       socket.emit('myVote', {vote: message, time: time.toLocaleString() });
