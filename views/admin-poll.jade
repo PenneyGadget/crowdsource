@@ -4,4 +4,5 @@ html(lang="en")
     title=title
   body
     h2= title
-    h2= 'Current Poll: ' + poll.name
+    h2= 'Current Poll: ' + poll.poll.name
+    h2= 'Choice One: ' + poll.poll.options[0]

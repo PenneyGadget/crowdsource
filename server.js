@@ -19,19 +19,17 @@ app.get('/', (req, res) => {
 });
 
 app.post('/polls', (req, res) => {
-  // if (!req.body.poll) { return res.sendStatus(400); }
   var id = generateId();
 
   app.locals.polls[id] = req.body;
   poll = app.locals.polls[id];
-  poll.id = id;
   poll.votes = {};
 
-  res.redirect('/polls/' + id + '/admin');
+  res.redirect('/poll/' + id + '/admin');
 });
 
-app.get('polls/:id/admin/', (req, res) => {
-  var poll = app.locals.poll[req.params.id];
+app.get('/poll/:id/admin/', (req, res) => {
+  poll = app.locals.polls[req.params.id];
   res.render('admin-poll', { poll: poll, identifier: { id: req.params.id } });
 });
 

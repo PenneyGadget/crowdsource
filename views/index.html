@@ -17,15 +17,15 @@
     <section class="poll-form">
       <form class="poll-setup" action="/polls" method="post">
         <label for="poll-name">Poll Name:</label>
-        <input type="text" class="form-control" name="poll[name]" id="poll-name">
+        <input type="text" class="form-control" name="poll[name]" required id="poll-name">
 
         <h3>Add at least 2 and up to 6 voting choices:</h3>
 
         <label for="opt-one">Option 1:</label>
-        <input type="text" class="option" name="poll[options][]" id="opt-one"><br>
+        <input type="text" class="option" name="poll[options][]" required id="opt-one"><br>
 
         <label for="opt-two">Option 2:</label>
-        <input type="text" class="option" name="poll[options][]" id="opt-two"><br>
+        <input type="text" class="option" name="poll[options][]" required id="opt-two"><br>
 
         <label for="opt-three">Option 3:</label>
         <input type="text" class="option" name="poll[options][]" id="opt-three"><br>
