@@ -19,19 +19,20 @@ app.get('/', (req, res) => {
 });
 
 app.post('/polls', (req, res) => {
-  if (!req.body.poll) { return res.sendStatus(400); }
+  // if (!req.body.poll) { return res.sendStatus(400); }
   var id = generateId();
-  var admin = generateId();
-  app.locals.polls[id] = {};
-  app.locals.polls[id].name = req.body.poll.name;
-  app.locals.polls[id].options = req.body.poll.options;
-  app.locals.polls[id].adminID = admin;
-  console.log(app.locals.polls[id]);
-  res.redirect('/polls/' + id + '/admin/' + admin );
+
+  app.locals.polls[id] = req.body;
+  poll = app.locals.polls[id];
+  poll.id = id;
+  poll.votes = {};
+
+  res.redirect('/polls/' + id + '/admin');
 });
 
-app.get('polls/:pollID/admin/:adminID', (req, res) => {
-  res.render('admin-poll', { pollID: req.params.pollID });
+app.get('polls/:id/admin/', (req, res) => {
+  var poll = app.locals.poll[req.params.id];
+  res.render('admin-poll', { poll: poll, identifier: { id: req.params.id } });
 });
 
 const port = process.env.PORT || 3000;
