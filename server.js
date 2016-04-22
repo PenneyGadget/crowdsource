@@ -7,7 +7,7 @@ const generateId = require('./lib/generate-id');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
 app.locals.title = 'Crowdsource';
 app.locals.polls = {};

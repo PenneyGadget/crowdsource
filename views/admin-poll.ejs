@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <title>Crowdsource</title>
+  </head>
+  <body>
+    <h2 class="text-center"><%= title %></h2>
+    <div class="text-center">
+      <h2>Current Poll: <%= poll.poll.name %></h2>
+    </div>
+    <div class="text-center" id="choices">
+      <% for(var i=0; i < poll.poll.options.length; i++) { %>
+        <% if(poll.poll.options[i] !== '') { %>
+          <button type="button" name="button"><%= poll.poll.options[i] %></button><br><br>
+        <% } %>
+      <% } %>
+    </div>
+    <div id="my-vote"></div>
+    <h3 class="text-center">Current Votes:</h3>
+    <ul id="vote-tally"></ul>
+    <div class="text-center" id="connection-count"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+  </body>
+</html>
