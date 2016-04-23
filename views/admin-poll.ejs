@@ -11,7 +11,7 @@
       <h2>Current Poll: <%= poll.name %></h2>
       <button type="button" name="button" id="close-poll">Close Poll</button>
       <h4><a href="/poll/<%= identifier.id %>/admin">Admin Link</a></h4>
-      <h4><a href="/poll/<%= identifier.id %>">Public Link</a></h4>
+      <h4><a href="/poll/<%= identifier.id %>" target="_blank">Public Link</a></h4>
     </div><br>
     <div class="text-center" id="choices">
       <% for(var i=0; i < poll.options.length; i++) { %>
@@ -21,8 +21,14 @@
       <% } %>
     </div>
     <div class="text-center" id="my-vote"></div>
-    <h3 class="text-center">Current Votes:</h3>
-    <ul class="text-center" id="vote-tally"></ul>
+    <h3 class="text-center">Current Votes: <%= poll.showresults %></h3>
+    <ul class="text-center" id="vote-tally">
+      <% for(var i=0; i < poll.options.length; i++) { %>
+        <% if(poll.options[i] !== '') { %>
+          <li><%= poll.options[i] %>: <%= poll.votes[poll.options[i]] %></li>
+        <% } %>
+      <% } %>
+    </ul>
     <div class="text-center" id="connection-count"></div>
 
     <script src="/socket.io/socket.io.js"></script>

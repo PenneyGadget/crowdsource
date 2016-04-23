@@ -19,9 +19,11 @@ for (var i = 0; i < buttons.length; i++) {
   });
 }
 
-closePollButton.addEventListener('click', function() {
-  socket.send('closePoll', { id: pollId });
-});
+if (typeof(closePollButton) !== undefined && closePollButton !== null) {
+  closePollButton.addEventListener('click', function() {
+    socket.send('closePoll', { id: pollId });
+  });
+}
 
 socket.on('usersConnected', function(count) {
   connectionCount.innerText = 'Connected Users: ' + count;
@@ -33,6 +35,7 @@ socket.on('myVote', function(data) {
 });
 
 socket.on('voteTally', function(data) {
+  voteTally.innerHTML = '';
   Object.keys(data.votes).forEach(appendVote.bind(data.votes), data.votes);
 });
 

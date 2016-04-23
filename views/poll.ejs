@@ -21,9 +21,12 @@
       <h4 class="text-center">Sorry, this poll is closed.</h4>
     <% } %>
     <div class="text-center" id="my-vote"></div>
-    <!-- <h3 class="text-center">Current Votes:</h3>
-    <ul class="text-center" id="vote-tally"></ul>
-    <div class="text-center" id="connection-count"></div> -->
+
+    <% if(poll.showresults === "on") { %>
+      <h3 class="text-center">Current Votes:</h3>
+      <ul class="text-center" id="vote-tally"></ul>
+      <div class="text-center" id="connection-count"></div>
+    <% } %>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>

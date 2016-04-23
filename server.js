@@ -30,6 +30,7 @@ app.post('/polls', (req, res) => {
     }
   });
   poll.closed = false;
+  // if(poll.showresults
   // Need to set a timer here
   res.redirect('/poll/' + id + '/admin');
 });
@@ -71,7 +72,7 @@ io.on('connection', function(socket) {
       var chosenOption = message.option;
       poll.votes[chosenOption]++;
       var time = new Date();
-      socket.emit('voteTally', {votes: poll.votes});
+      io.sockets.emit('voteTally', {votes: poll.votes});
       socket.emit('myVote', {vote: message, time: time.toLocaleString() });
     } else if(channel === 'closePoll') {
       var poll = app.locals.polls[message.id];
