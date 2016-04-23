@@ -39,18 +39,18 @@ socket.on('voteTally', function(data) {
   Object.keys(data.votes).forEach(appendVote.bind(data.votes), data.votes);
 });
 
-socket.on('disablePoll', function() {
-  closePollButton.insertAdjacentHTML('afterend', '<h3>This Poll is Finito!</h3>');
-  closePollButton.setAttribute('class', 'hidden');
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].setAttribute('disabled', 'disabled');
+socket.on('disablePoll', function(closeId) {
+  if (closeId === pollId) {
+    closePollButton.insertAdjacentHTML('afterend', '<h3>This Poll is Finito!</h3>');
+    closePollButton.setAttribute('class', 'hidden');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute('disabled', 'disabled');
+    }
   }
 });
 
 var appendVote = function(option, index) {
   var newElem = document.createElement('li');
-  // var optionName = document.createElement("span").class("option-name");
-  // var optionVotes = document.createElement("span").class("option-votes");
   newElem.innerHTML = option + ": " + this[option];
   voteTally.appendChild(newElem);
 };

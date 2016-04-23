@@ -1,6 +1,7 @@
-var expect = require('chai').expect;
-var request = require('supertest');
-var app = require('../server');
+const expect = require('chai').expect;
+const request = require('supertest');
+const app = require('../server');
+const fixturs = require('./fixtures');
 
 describe('GET /', function(){
   it('responds with a 200 OK', function(done){

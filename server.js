@@ -30,8 +30,8 @@ app.post('/polls', (req, res) => {
     }
   });
   poll.closed = false;
-  // if(poll.showresults
-  // Need to set a timer here
+  console.log(app.locals.polls);
+  startPollCountDown(poll.timer, poll.id);
   res.redirect('/poll/' + id + '/admin');
 });
 
@@ -51,8 +51,6 @@ const server = http.createServer(app)
                  .listen(port, function() {
   console.log('Listening on port ' + port + '.');
 });
-
-module.exports = server;
 
 // Websocket Magic:
 
@@ -83,8 +81,17 @@ io.on('connection', function(socket) {
 
   socket.on('disconnect', function() {
     console.log('A user has disconnected.', io.engine.clientsCount);
-    // delete app.locals.votes[socket.id];
-    // socket.emit('voteTally', countVotes(votes));
     io.sockets.emit('usersConnected', io.engine.clientsCount);
   });
 });
+
+function startPollCountDown(timer, pollId) {
+  if(timer !== "No time constraint") {
+    setTimeout(function() {
+      app.locals.polls[pollId].closed = true;
+      io.sockets.emit('disablePoll', pollId);
+    }, (timer * 1000 * 60));
+  }
+}
+
+module.exports = server;
