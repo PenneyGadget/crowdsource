@@ -1,14 +1,15 @@
 <!doctype html>
 <html>
   <head>
+    <link href='https://fonts.googleapis.com/css?family=Rock+Salt|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
     <link href="/style.css" rel="stylesheet" type="text/css">
     <title>Crowdsource</title>
   </head>
   <body>
-    <h2 class="text-center"><%= title %></h2>
+    <h2 class="text-center title"><%= title %></h2>
     <div class="text-center">
-      <h2>Current Poll: <%= poll.name %></h2>
+      <h2 class="current-poll">Current Poll: <%= poll.name %></h2>
       <button type="button" name="button" id="close-poll">Close Poll</button>
       <h4><a href="/poll/<%= identifier.id %>/admin">Admin Link</a></h4>
       <h4><a href="/poll/<%= identifier.id %>" target="_blank">Public Link</a></h4>

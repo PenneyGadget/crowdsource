@@ -3,3 +3,35 @@ ul#vote-tally {
     margin: 0;
     padding: 0;
 }
+
+body {
+  background-image: url('images/Audience.jpg');
+}
+
+.title {
+  font-family: 'Rock Salt', cursive;
+  font-size: 4em;
+  margin-top: 50px;
+}
+
+#poll-name {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 2.5em;
+  font-weight: normal;
+}
+
+.current-poll {
+  font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.create-poll {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 2.5em;
+}
+
+label {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 1.75em;
+  text-shadow: 0 0 6px #FCF0C6, 0 0 7px #FCF0C6, 0 0 3px #FCF0C6;
+  font-weight: bold;
+}
