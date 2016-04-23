@@ -4,19 +4,24 @@ var connectionCount = document.getElementById('connection-count');
 var voteTally = document.getElementById('vote-tally');
 var myVote = document.getElementById('my-vote');
 var buttons = document.querySelectorAll('#choices button');
+var closePollButton = document.getElementById('close-poll');
 var submittedVotes = 0;
 var pollId = window.location.pathname.split('/')[2];
 
 for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', function () {
+  buttons[i].addEventListener('click', function() {
     if (submittedVotes >= 1){
       myVote.innerText = "You have already cast a vote.";
     } else {
-    socket.send('voteCast', {option: this.innerText, id: pollId});
+    socket.send('voteCast', { option: this.innerText, id: pollId });
     submittedVotes ++;
     }
   });
 }
+
+closePollButton.addEventListener('click', function() {
+  socket.send('closePoll', { id: pollId });
+});
 
 socket.on('usersConnected', function(count) {
   connectionCount.innerText = 'Connected Users: ' + count;
@@ -29,6 +34,14 @@ socket.on('myVote', function(data) {
 
 socket.on('voteTally', function(data) {
   Object.keys(data.votes).forEach(appendVote.bind(data.votes), data.votes);
+});
+
+socket.on('disablePoll', function() {
+  closePollButton.insertAdjacentHTML('afterend', '<h3>This Poll is Finito!</h3>');
+  closePollButton.setAttribute('class', 'hidden');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].setAttribute('disabled', 'disabled');
+  }
 });
 
 var appendVote = function(option, index) {

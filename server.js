@@ -31,13 +31,17 @@ app.post('/polls', (req, res) => {
   });
   poll.closed = false;
   // Need to set a timer here
-  console.log(poll);
   res.redirect('/poll/' + id + '/admin');
 });
 
 app.get('/poll/:id/admin/', (req, res) => {
   poll = app.locals.polls[req.params.id];
   res.render('admin-poll', { poll: poll, identifier: { id: req.params.id } });
+});
+
+app.get('/poll/:id', (req, res) => {
+  poll = app.locals.polls[req.params.id];
+  res.render('poll', { poll: poll, identifier: { id: req.params.id } });
 });
 
 const port = process.env.PORT || 3000;
@@ -67,7 +71,7 @@ io.on('connection', function(socket) {
       var chosenOption = message.option;
       poll.votes[chosenOption]++;
       var time = new Date();
-      socket.emit('voteTally', {chosen:message.option, votes: poll.votes});
+      socket.emit('voteTally', {votes: poll.votes});
       socket.emit('myVote', {vote: message, time: time.toLocaleString() });
     } else if(channel === 'closePoll') {
       var poll = app.locals.polls[message.id];
@@ -83,36 +87,3 @@ io.on('connection', function(socket) {
     io.sockets.emit('usersConnected', io.engine.clientsCount);
   });
 });
-
-function countVotes(poll) {
-  //THIS NEEDS TO BE HIGHER SCOPE
-  var voteTally = {
-
-  };
-
-  //NEED TO create (Ideally at poll creation)
-  //voteTally = { poll.id { Answer:numVotes, Answer2:numVotes, ... } }
-  poll.options.forEach(function(option) {
-    if(voteTally.option){
-      voteTally.option++;
-    }else{
-      voteTally.option = 1;
-    }
-  });
-  // for(var i=0; i < votes.poll.options.length; i++) {
-  //   if(votes.poll.options[i] !== '') {
-  //     console.log(votes.poll.options[i]);
-  //   }
-  // }
-  // var voteTally = {
-  //   A: 0,
-  //   B: 0,
-  //   C: 0,
-  //   D: 0
-  // };
-  // console.log(votes);
-  // // for(var votes in votes) {
-  // //   voteTally[votes[vote]]++;
-  // // }
-  return voteTally;
-}

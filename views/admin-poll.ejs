@@ -9,7 +9,10 @@
     <h2 class="text-center"><%= title %></h2>
     <div class="text-center">
       <h2>Current Poll: <%= poll.name %></h2>
-    </div>
+      <button type="button" name="button" id="close-poll">Close Poll</button>
+      <h4><a href="/poll/<%= identifier.id %>/admin">Admin Link</a></h4>
+      <h4><a href="/poll/<%= identifier.id %>">Public Link</a></h4>
+    </div><br>
     <div class="text-center" id="choices">
       <% for(var i=0; i < poll.options.length; i++) { %>
         <% if(poll.options[i] !== '') { %>
