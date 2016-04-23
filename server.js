@@ -23,10 +23,15 @@ app.post('/polls', (req, res) => {
   var poll = req.body.poll;
   app.locals.polls[id] = poll;
   poll.id = id;
-  poll.votes = [];
+  poll.votes = {};
+  poll.options.forEach(function(option){
+    if (option !== '') {
+      poll.votes[option] = 0;
+    }
+  });
   poll.closed = false;
   // Need to set a timer here
-
+  console.log(poll);
   res.redirect('/poll/' + id + '/admin');
 });
 
@@ -59,9 +64,10 @@ io.on('connection', function(socket) {
     //message.id == POLL ID
     if(channel === 'voteCast') {
       var poll = app.locals.polls[message.id];
-      poll.votes.push(message.option);
+      var chosenOption = message.option;
+      poll.votes[chosenOption]++;
       var time = new Date();
-      io.sockets.emit('voteTally', countVotes(poll));
+      socket.emit('voteTally', {chosen:message.option, votes: poll.votes});
       socket.emit('myVote', {vote: message, time: time.toLocaleString() });
     } else if(channel === 'closePoll') {
       var poll = app.locals.polls[message.id];
@@ -108,6 +114,5 @@ function countVotes(poll) {
   // // for(var votes in votes) {
   // //   voteTally[votes[vote]]++;
   // // }
-  console.log(voteTally);
   return voteTally;
 }
