@@ -2,24 +2,29 @@
 <html>
   <head>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
-    <link href="style.css" rel="stylesheet" type="text/css">
+    <link href="/style.css" rel="stylesheet" type="text/css">
     <title>Crowdsource</title>
   </head>
   <body>
     <h2 class="text-center"><%= title %></h2>
     <div class="text-center">
-      <h2>Current Poll: <%= poll.poll.name %></h2>
+      <h2>Current Poll: <%= poll.name %></h2>
     </div>
     <div class="text-center" id="choices">
-      <% for(var i=0; i < poll.poll.options.length; i++) { %>
-        <% if(poll.poll.options[i] !== '') { %>
-          <button type="button" name="button"><%= poll.poll.options[i] %></button><br><br>
+      <% for(var i=0; i < poll.options.length; i++) { %>
+        <% if(poll.options[i] !== '') { %>
+          <button type="button" name="button"><%= poll.options[i] %></button><br><br>
         <% } %>
       <% } %>
     </div>
     <div class="text-center" id="my-vote"></div>
     <h3 class="text-center">Current Votes:</h3>
-    <ul class="text-center" id="vote-tally"></ul>
+    <ul class="text-center" id="vote-tally">
+      <li id="answer-1"><span class="option-label">ANSWER 1</span><span class="option-votes">3</span></li>
+      <li id="answer-2"><span class="option-label">ANSWER 2</span><span class="option-votes">3</span></li>
+      <li id="answer-3"><span class="option-label">ANSWER 3</span><span class="option-votes">3</span></li>
+      <li id="answer-4"><span class="option-label">ANSWER 4</span><span class="option-votes">3</span></li>
+    </ul>
     <div class="text-center" id="connection-count"></div>
 
     <script src="/socket.io/socket.io.js"></script>

@@ -24,7 +24,6 @@ socket.on('usersConnected', function(count) {
 
 socket.on('myVote', function(data) {
   var formattedTime = data.time.split(", ");
-  // console.log(data);
   myVote.innerText = 'Thanks for voting! You chose ' + data.vote.option + ' on ' + formattedTime[0] + ' at ' + formattedTime[1];
 });
 
@@ -35,6 +34,8 @@ socket.on('voteTally', function(votes) {
 
 var appendVote = function(option, index) {
   var newElem = document.createElement('li');
+  var optionName = newElem.append("span").class("option-name");
+  var optionVotes = newElem.append("span").class("option-votes");
   newElem.innerHTML = option + ': ' + this[option];
   voteTally.appendChild(newElem);
 };

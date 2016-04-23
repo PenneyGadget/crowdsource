@@ -20,10 +20,12 @@ app.get('/', (req, res) => {
 
 app.post('/polls', (req, res) => {
   var id = generateId();
-
-  app.locals.polls[id] = req.body;
-  poll = app.locals.polls[id];
-  poll.votes = {};
+  var poll = req.body.poll;
+  app.locals.polls[id] = poll;
+  poll.id = id;
+  poll.votes = [];
+  poll.closed = false;
+  // Need to set a timer here
 
   res.redirect('/poll/' + id + '/admin');
 });
@@ -50,20 +52,22 @@ const io = socketIo(server);
 io.on('connection', function(socket) {
   console.log('A user has connected.', io.engine.clientsCount);
 
-  io.sockets.emit('usersConnected', io.engine.clientsCount);
+  io.sockets.emit('userConnected', io.engine.clientsCount);
 
   socket.on('message', function(channel, message) {
+    //message.option == BUTTON CLICKED
+    //message.id == POLL ID
     if(channel === 'voteCast') {
-      var votes = app.locals.polls[message.id];
+      var poll = app.locals.polls[message.id];
+      poll.votes.push(message.option);
       var time = new Date();
-      socket.emit('voteTally', countVotes(votes));
+      io.sockets.emit('voteTally', countVotes(poll));
       socket.emit('myVote', {vote: message, time: time.toLocaleString() });
+    } else if(channel === 'closePoll') {
+      var poll = app.locals.polls[message.id];
+      poll.closed = true;
+      io.sockets.emit('disablePoll');
     }
-    // } else if(channel === 'closePoll') {
-    //   var votes = app.locals.votes[message.id];
-    //   poll.closed = true;
-    //   socket.emil('disablePoll');
-    // }
   });
 
   socket.on('disconnect', function() {
@@ -74,15 +78,36 @@ io.on('connection', function(socket) {
   });
 });
 
-function countVotes(votes) {
+function countVotes(poll) {
+  //THIS NEEDS TO BE HIGHER SCOPE
   var voteTally = {
-    A: 0,
-    B: 0,
-    C: 0,
-    D: 0
+
   };
-  for(var vote in votes) {
-    voteTally[votes[vote]]++;
-  }
+
+  //NEED TO create (Ideally at poll creation)
+  //voteTally = { poll.id { Answer:numVotes, Answer2:numVotes, ... } }
+  poll.options.forEach(function(option) {
+    if(voteTally.option){
+      voteTally.option++;
+    }else{
+      voteTally.option = 1;
+    }
+  });
+  // for(var i=0; i < votes.poll.options.length; i++) {
+  //   if(votes.poll.options[i] !== '') {
+  //     console.log(votes.poll.options[i]);
+  //   }
+  // }
+  // var voteTally = {
+  //   A: 0,
+  //   B: 0,
+  //   C: 0,
+  //   D: 0
+  // };
+  // console.log(votes);
+  // // for(var votes in votes) {
+  // //   voteTally[votes[vote]]++;
+  // // }
+  console.log(voteTally);
   return voteTally;
 }
