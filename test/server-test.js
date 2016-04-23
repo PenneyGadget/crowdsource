@@ -1,20 +1,51 @@
-const expect = require('chai').expect;
-const request = require('supertest');
+const assert = require('assert');
+const request = require('request');
 const app = require('../server');
-const fixturs = require('./fixtures');
+const fixtures = require('./fixtures');
 
-describe('GET /', function(){
-  it('responds with a 200 OK', function(done){
-
-    request(app).get('/').expect(200, done);
-
+describe('Server', () => {
+  before((done) => {
+    this.port = 3000;
+    this.server = app.listen(this.port, (err, result) => {
+      if (err) { return done(err); }
+      done();
+    });
   });
-});
 
-describe('undefined routes', function(){
-  it('responds with a 404', function(done){
+  after(() => {
+    this.server.close();
+  });
 
-    request(app).get('/puppies').expect(404, done);
+  it('should exist', () => {
+    assert(app);
+  });
 
+  describe('GET /', () => {
+    it('should return a 200 OK', (done) => {
+      request.get('http://localhost:3000', (error, response) => {
+        if (error) { done(error); }
+        assert.equal(response.statusCode, 200);
+        done();
+      });
+    });
+
+    it('should have the title on the page', (done) => {
+      request.get('http://localhost:3000', (error, response) => {
+        if (error) { done(error); }
+        assert(response.body.includes('Crowdsource'),
+          `"${response.body}" does not include "Crowdsource"`);
+        done();
+      });
+    });
+  });
+
+  describe('POST /polls', () => {
+    it('should return a 200 OK', (done) => {
+      request.get('http://localhost:3000', (error, response) => {
+        if (error) { done(error); }
+        assert.equal(response.statusCode, 200);
+        done();
+      });
+    });
   });
 });
