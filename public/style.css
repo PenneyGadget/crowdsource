@@ -31,6 +31,11 @@ body {
   font-family: 'Open Sans Condensed', sans-serif;
 }
 
+button, a {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 1.5em;
+}
+
 .create-poll {
   font-family: 'Open Sans Condensed', sans-serif;
   font-size: 2em;
@@ -41,4 +46,33 @@ label {
   font-size: 1.5em;
   text-shadow: 0 0 6px #FCF0C6, 0 0 7px #FCF0C6, 0 0 3px #FCF0C6;
   font-weight: bold;
+}
+
+#my-vote, #vote-tally {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 1.5em;
+  text-shadow: 0 0 6px #FCF0C6, 0 0 7px #FCF0C6, 0 0 3px #FCF0C6;
+}
+
+.current-votes, .users-connected {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 2em;
+  font-weight: bold;
+  text-shadow: 0 0 6px #FCF0C6, 0 0 7px #FCF0C6, 0 0 3px #FCF0C6;
+}
+
+.users-connected {
+  margin-bottom: 50px;
+}
+
+.welcome, .close-message {
+  font-family: 'Rock Salt', cursive;
+  font-size: 2.75em;
+}
+
+.choose {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 2.5em;
+  margin-top: 25px;
+  margin-bottom: 15px;
 }

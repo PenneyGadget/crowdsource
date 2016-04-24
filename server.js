@@ -30,7 +30,6 @@ app.post('/polls', (req, res) => {
     }
   });
   poll.closed = false;
-  console.log(app.locals.polls);
   startPollCountDown(poll.timer, poll.id);
   res.redirect('/poll/' + id + '/admin');
 });
@@ -58,24 +57,18 @@ const socketIo = require('socket.io');
 const io = socketIo(server);
 
 io.on('connection', function(socket) {
-  console.log('A user has connected.', io.engine.clientsCount);
-
-  io.sockets.emit('userConnected', io.engine.clientsCount);
-
+  io.sockets.emit('usersConnected', io.engine.clientsCount);
   socket.on('message', function(channel, message) {
-    //message.option == BUTTON CLICKED
-    //message.id == POLL ID
+    var poll = app.locals.polls[message.id];
     if(channel === 'voteCast') {
-      var poll = app.locals.polls[message.id];
       var chosenOption = message.option;
       poll.votes[chosenOption]++;
       var time = new Date();
       io.sockets.emit('voteTally', {votes: poll.votes});
       socket.emit('myVote', {vote: message, time: time.toLocaleString() });
     } else if(channel === 'closePoll') {
-      var poll = app.locals.polls[message.id];
       poll.closed = true;
-      io.sockets.emit('disablePoll');
+      io.sockets.emit('disablePoll', message.id);
     }
   });
 

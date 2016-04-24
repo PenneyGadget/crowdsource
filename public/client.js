@@ -40,10 +40,10 @@ socket.on('voteTally', function(data) {
 });
 
 socket.on('disablePoll', function(closeId) {
-  if (closeId === pollId) {
-    closePollButton.insertAdjacentHTML('afterend', '<h3>This Poll is Finito!</h3>');
+  if(closeId === pollId) {
+    closePollButton.insertAdjacentHTML('afterend', '<h3 class="close-message">This Poll is Finito!</h3>');
     closePollButton.setAttribute('class', 'hidden');
-    for (var i = 0; i < buttons.length; i++) {
+    for(var i = 0; i < buttons.length; i++) {
       buttons[i].setAttribute('disabled', 'disabled');
     }
   }

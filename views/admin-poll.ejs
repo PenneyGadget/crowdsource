@@ -9,20 +9,23 @@
   <body>
     <h2 class="text-center title"><%= title %></h2>
     <div class="text-center">
-      <h2 class="current-poll">Current Poll: <%= poll.name %></h2>
-      <button type="button" name="button" id="close-poll">Close Poll</button>
-      <h4><a href="/poll/<%= identifier.id %>/admin">Admin Link</a></h4>
-      <h4><a href="/poll/<%= identifier.id %>" target="_blank">Public Link</a></h4>
+      <h2 class="current-poll">Current Poll: <u><%= poll.name %></u></h2>
+      <% if(!poll.closed) { %>
+        <button type="button" name="button" id="close-poll">Close Poll</button><br><br>
+      <% } else { %>
+        <h3 class="text-center close-message">This poll is Finito!</h3>
+      <% } %>
+      <h4><a href="/poll/<%= identifier.id %>/admin">Admin Link</a>  ||  <a href="/poll/<%= identifier.id %>" target="_blank">Public Link</a></h4>
     </div><br>
     <div class="text-center" id="choices">
       <% for(var i=0; i < poll.options.length; i++) { %>
         <% if(poll.options[i] !== '') { %>
-          <button type="button" name="button"><%= poll.options[i] %></button><br><br>
+          <button type="button" name="button" <%= (poll.closed) ? "disabled" : "" %> ><%= poll.options[i] %></button><br><br>
         <% } %>
       <% } %>
     </div>
     <div class="text-center" id="my-vote"></div>
-    <h3 class="text-center">Current Votes: <%= poll.showresults %></h3>
+    <h3 class="text-center current-votes">Current Votes: <%= poll.showresults %></h3>
     <ul class="text-center" id="vote-tally">
       <% for(var i=0; i < poll.options.length; i++) { %>
         <% if(poll.options[i] !== '') { %>
@@ -30,7 +33,7 @@
         <% } %>
       <% } %>
     </ul><br>
-    <div class="text-center" id="connection-count"></div>
+    <div class="text-center users-connected" id="connection-count"></div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>

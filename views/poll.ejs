@@ -8,9 +8,9 @@
   </head>
   <body>
     <h2 class="text-center title"><%= title %></h2>
-    <h2 class="text-center">Welcome to the <u><%= poll.name %></u> Poll!</h2>
+    <h2 class="text-center welcome">Welcome to the <u><%= poll.name %></u> Poll!</h2>
     <% if(!poll.closed) { %>
-      <h4 class="text-center">Choose Wisely...</h4>
+      <h4 class="text-center choose">Choose Wisely...</h4>
       <div class="text-center" id="choices">
         <% for(var i=0; i < poll.options.length; i++) { %>
           <% if(poll.options[i] !== '') { %>
@@ -19,12 +19,12 @@
         <% } %>
       </div>
     <% } else { %>
-      <h4 class="text-center">Sorry, this poll is closed.</h4>
+      <h3 class="text-center close-message">Sorry, this poll is closed.</h3>
     <% } %>
     <div class="text-center" id="my-vote"></div>
 
     <% if(poll.showresults === "on") { %>
-      <h3 class="text-center">Current Votes:</h3>
+      <h3 class="text-center current-votes">Current Votes:</h3>
       <ul class="text-center" id="vote-tally"></ul>
       <div class="text-center" id="connection-count"></div>
     <% } %>
