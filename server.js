@@ -57,9 +57,13 @@ const socketIo = require('socket.io');
 const io = socketIo(server);
 
 io.on('connection', function(socket) {
+  console.log("am I getting here?");
   io.sockets.emit('usersConnected', io.engine.clientsCount);
   socket.on('message', function(channel, message) {
     var poll = app.locals.polls[message.id];
+    console.log(message);
+    console.log(channel);
+
     if(channel === 'voteCast') {
       var chosenOption = message.option;
       poll.votes[chosenOption]++;

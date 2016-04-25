@@ -47,39 +47,15 @@ describe('Server', () => {
   });
 
   describe('POST /polls', () => {
-    beforeEach(() => {
-      app.locals.polls = {};
-    });
 
-    it('should not return a 404 OK', (done) => {
-      this.request.post('/polls', (error, response) => {
-        if (error) { done(error); }
-        assert.notEqual(response.statusCode, 404);
-        done();
-      });
-    });
-
-    it('should receive and restore data', (done) => {
-     var poll = { poll: validPoll.validPoll };
-
-     this.request.post('/polls', { form: poll }, (error, response) => {
+   it('should not return 404', (done) => {
+     this.request.post('/polls', (error, response) => {
        if (error) { done(error); }
-       var pollCount = Object.keys(app.locals.polls).length;
-       assert.equal(pollCount, 1, `Expected 1 poll, found ${pollCount}`);
+       assert.notEqual(response.statusCode, 404);
        done();
      });
-    });
+   });
 
-    it('should redirect the admin to their new poll', (done) => {
-    var poll = { poll: validPoll.validPoll };
-
-    this.request.post('/polls', { form: poll }, (error, response) => {
-      if (error) { done(error); }
-      var newPollId = Object.keys(app.locals.polls)[0];
-      assert.equal(response.headers.location, '/poll/' + newPollId + '/admin');
-      done();
-    });
-  });
-});
+ });
 
 });

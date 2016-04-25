@@ -26,7 +26,9 @@ if (typeof(closePollButton) !== undefined && closePollButton !== null) {
 }
 
 socket.on('usersConnected', function(count) {
-  connectionCount.innerText = 'Connected Users: ' + count;
+  if(connectionCount){
+    connectionCount.innerText = 'Connected Users: ' + count;
+  }
 });
 
 socket.on('myVote', function(data) {
@@ -35,8 +37,10 @@ socket.on('myVote', function(data) {
 });
 
 socket.on('voteTally', function(data) {
-  voteTally.innerHTML = '';
-  Object.keys(data.votes).forEach(appendVote.bind(data.votes), data.votes);
+  if(voteTally){
+    voteTally.innerHTML = '';
+    Object.keys(data.votes).forEach(appendVote.bind(data.votes), data.votes);
+  }
 });
 
 socket.on('disablePoll', function(closeId) {
