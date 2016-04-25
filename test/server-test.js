@@ -3,6 +3,7 @@ const request = require('request');
 const app = require('../server');
 const validPoll = require('./fixtures/valid-poll');
 const closedPoll = require('./fixtures/closed-poll');
+const invalidPoll = require('./fixtures/invalid-poll');
 
 
 describe('Server', () => {
@@ -83,6 +84,26 @@ describe('Server', () => {
         if (error) { done(error); }
         var newPollId = Object.keys(app.locals.polls)[0];
         assert.equal(response.headers.location, '/poll/' + newPollId + '/admin');
+        done();
+      });
+    });
+
+    it('should not allow redirect and poll creation if title is missing', (done) => {
+      var payload = { poll: invalidPoll.invalidPollOne };
+
+      this.request.post('/polls', { form: payload }, (error, response) => {
+        if (error) { done(error); }
+        assert(response.headers.location, '/');
+        done();
+      });
+    });
+
+    it('should not allow redirect and poll creation if there are not at least 2 options', (done) => {
+      var payload = { poll: invalidPoll.invalidPollTwo };
+
+      this.request.post('/polls', { form: payload }, (error, response) => {
+        if (error) { done(error); }
+        assert(response.headers.location, '/');
         done();
       });
     });
