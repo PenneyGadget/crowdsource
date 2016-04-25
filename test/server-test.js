@@ -92,6 +92,7 @@ describe('Server', () => {
 
     beforeEach(() => {
       app.locals.polls.testPoll = validPoll.validPoll;
+      app.locals.polls.closedPoll = closedPoll.validPoll;
     });
 
     it('should not return 404', (done) => {
@@ -112,6 +113,79 @@ describe('Server', () => {
         done();
       });
     });
+
+    it('should return a page that has the poll options', (done) => {
+      var poll = app.locals.polls.testPoll;
+
+      this.request.get('/poll/testPoll', (error, response) => {
+        if (error) { done(error); }
+        assert(response.body.includes(poll.options[0]),
+          `"${response.body}" does not include "${poll.options.first}".`);
+        done();
+      });
+    });
+
+    it('should show closed poll message if poll is closed', (done) => {
+      var poll = app.locals.polls.closedPoll;
+
+      this.request.get('/poll/closedPoll', (error, response) => {
+        if(error) { done(error); }
+        assert(response.body.includes("Sorry, this poll is closed."));
+        done();
+      });
+    });
+  });
+
+  describe('GET /poll/:id/admin', () => {
+
+    beforeEach(() => {
+      app.locals.polls.testPoll = validPoll.validPoll;
+      app.locals.polls.closedPoll = closedPoll.validPoll;
+    });
+
+    it('should not return 404', (done) => {
+      this.request.get('/poll/testPoll/admin', (error, response) => {
+        if (error) { done(error); }
+        assert.notEqual(response.statusCode, 404);
+        done();
+      });
+    });
+
+    it('should return a page with correct admin info', (done) => {
+      var poll = app.locals.polls.testPoll;
+
+      this.request.get('/poll/testPoll/admin', (error, response) => {
+        if (error) { done(error); }
+        assert(response.body.includes(poll.name), `"${response.body}" does not include "${poll.name}"`);
+        assert(response.body.includes(poll.options[0]), `"${response.body}" does not include "${poll.options.first}"`);
+        assert(response.body.includes(poll.options[2]), `"${response.body}" does not include "salad"`);
+        assert(response.body.includes("Close Poll"), `"${response.body}" does not include "Close Poll"`);
+        assert(response.body.includes("Current Votes"), `"${response.body}" does not include "Current Votes"`);
+        done();
+      });
+    });
+
+    it('should show an admin and public link', (done) => {
+      var poll = app.locals.polls.testPoll;
+
+      this.request.get('/poll/testPoll/admin', (error, response) => {
+        if (error) { done(error); }
+        assert(response.body.includes('<a href="/poll/testPoll/admin">Admin Link</a>'));
+        assert(response.body.includes('<a href="/poll/testPoll" target="_blank">Public Link</a>'));
+        done();
+      });
+    });
+
+    it('should show closed poll message if poll is closed', (done) => {
+      var poll = app.locals.polls.closedPoll;
+
+      this.request.get('/poll/closedPoll/admin', (error, response) => {
+        if(error) { done(error); }
+        assert(response.body.includes("This poll is Finito!"));
+        done();
+      });
+    });
+
   });
 
 });
