@@ -130,7 +130,7 @@ describe('Server', () => {
 
       this.request.get('/poll/closedPoll', (error, response) => {
         if(error) { done(error); }
-        assert(response.body.includes("Sorry, this poll is closed."));
+        assert(response.body.includes("Sorry, this poll is now closed."));
         done();
       });
     });

@@ -51,7 +51,7 @@ socket.on('disablePoll', function(closeId) {
       closePollButton.insertAdjacentHTML('afterend', '<h3 class="close-message">This Poll is Finito!</h3>');
       closePollButton.setAttribute('class', 'hidden');
     } else {
-      closeMessagePublic.innerHTML = "Sorry, this poll is closed.";
+      closeMessagePublic.innerHTML = "Sorry, this poll is now closed.";
     }
     for(var i = 0; i < buttons.length; i++) {
       buttons[i].setAttribute('disabled', 'disabled');
