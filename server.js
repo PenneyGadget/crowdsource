@@ -87,4 +87,4 @@ function startPollCountDown(timer, pollId) {
   }
 }
 
-module.exports = server;
+module.exports = app;
