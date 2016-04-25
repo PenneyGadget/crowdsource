@@ -48,14 +48,70 @@ describe('Server', () => {
 
   describe('POST /polls', () => {
 
-   it('should not return 404', (done) => {
-     this.request.post('/polls', (error, response) => {
-       if (error) { done(error); }
-       assert.notEqual(response.statusCode, 404);
-       done();
-     });
-   });
+    beforeEach(() => {
+      app.locals.polls = {};
+    });
 
- });
+    it('should not return 404', (done) => {
+      var payload = { poll: validPoll.validPoll };
+
+      this.request.post('/polls', { form: payload }, (error, response) => {
+        if (error) { done(error); }
+        assert.notEqual(response.statusCode, 404);
+        done();
+      });
+    });
+
+    it('should receive and restore data', (done) => {
+      var payload = { poll: validPoll.validPoll };
+
+      this.request.post('/polls', { form: payload }, (error, response) => {
+        if (error) { done(error); }
+
+        var pollCount = Object.keys(app.locals.polls).length;
+
+        assert.equal(pollCount, 1, `Expected 1 poll(s), found ${pollCount}`);
+
+        done();
+      });
+    });
+
+    it('should redirect the user to the admin page', (done) => {
+      var payload = { poll: validPoll.validPoll };
+
+      this.request.post('/polls', { form: payload }, (error, response) => {
+        if (error) { done(error); }
+        var newPollId = Object.keys(app.locals.polls)[0];
+        assert.equal(response.headers.location, '/poll/' + newPollId + '/admin');
+        done();
+      });
+    });
+  });
+
+  describe('GET /poll/:id', () => {
+
+    beforeEach(() => {
+      app.locals.polls.testPoll = validPoll.validPoll;
+    });
+
+    it('should not return 404', (done) => {
+      this.request.get('/poll/testPoll', (error, response) => {
+        if (error) { done(error); }
+        assert.notEqual(response.statusCode, 404);
+        done();
+      });
+    });
+
+    it('should return a page that has the title of the poll', (done) => {
+      var poll = app.locals.polls.testPoll;
+
+      this.request.get('/poll/testPoll', (error, response) => {
+        if (error) { done(error); }
+        assert(response.body.includes(poll.name),
+          `"${response.body}" does not include "${poll.name}".`);
+        done();
+      });
+    });
+  });
 
 });
