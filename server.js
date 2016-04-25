@@ -61,8 +61,6 @@ io.on('connection', function(socket) {
   io.sockets.emit('usersConnected', io.engine.clientsCount);
   socket.on('message', function(channel, message) {
     var poll = app.locals.polls[message.id];
-    console.log(message);
-    console.log(channel);
 
     if(channel === 'voteCast') {
       var chosenOption = message.option;

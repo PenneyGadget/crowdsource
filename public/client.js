@@ -3,6 +3,7 @@ const socket = io();
 var connectionCount = document.getElementById('connection-count');
 var voteTally = document.getElementById('vote-tally');
 var myVote = document.getElementById('my-vote');
+var closeMessagePublic = document.getElementById('close-message-public');
 var buttons = document.querySelectorAll('#choices button');
 var closePollButton = document.getElementById('close-poll');
 var submittedVotes = 0;
@@ -44,9 +45,14 @@ socket.on('voteTally', function(data) {
 });
 
 socket.on('disablePoll', function(closeId) {
+  console.log("IN THE CLIENT", closeId, pollId);
   if(closeId === pollId) {
-    closePollButton.insertAdjacentHTML('afterend', '<h3 class="close-message">This Poll is Finito!</h3>');
-    closePollButton.setAttribute('class', 'hidden');
+    if(closePollButton){
+      closePollButton.insertAdjacentHTML('afterend', '<h3 class="close-message">This Poll is Finito!</h3>');
+      closePollButton.setAttribute('class', 'hidden');
+    } else {
+      closeMessagePublic.innerHTML = "Sorry, this poll is closed.";
+    }
     for(var i = 0; i < buttons.length; i++) {
       buttons[i].setAttribute('disabled', 'disabled');
     }
