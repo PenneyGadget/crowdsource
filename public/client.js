@@ -45,7 +45,6 @@ socket.on('voteTally', function(data) {
 });
 
 socket.on('disablePoll', function(closeId) {
-  console.log("IN THE CLIENT", closeId, pollId);
   if(closeId === pollId) {
     if(closePollButton){
       closePollButton.insertAdjacentHTML('afterend', '<h3 class="close-message">This Poll is Finito!</h3>');

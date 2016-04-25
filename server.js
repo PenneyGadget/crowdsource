@@ -57,7 +57,6 @@ const socketIo = require('socket.io');
 const io = socketIo(server);
 
 io.on('connection', function(socket) {
-  console.log("am I getting here?");
   io.sockets.emit('usersConnected', io.engine.clientsCount);
   socket.on('message', function(channel, message) {
     var poll = app.locals.polls[message.id];
@@ -75,7 +74,6 @@ io.on('connection', function(socket) {
   });
 
   socket.on('disconnect', function() {
-    console.log('A user has disconnected.', io.engine.clientsCount);
     io.sockets.emit('usersConnected', io.engine.clientsCount);
   });
 });
